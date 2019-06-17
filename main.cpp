@@ -1,14 +1,6 @@
 #include <cassert>
-#include "NeuronalNetwork/ActivationLayer.hpp"
-#include "NeuronalNetwork/FCLayer.hpp"
-#include "NeuronalNetwork/Layer.hpp"
-#include "NeuronalNetwork/Network.hpp"
-
 #include <cmath>
-
-/*
- * Source: https://medium.com/datadriveninvestor/math-neural-network-from-scratch-in-python-d6da9f29ce65
- */
+#include "NeuronalNetwork/includes.hpp"
 
 int clearOutput(double x) {
   if (x < 0.1) return 0;
@@ -83,8 +75,10 @@ int main() {
   net.add(&second);
   net.add(&activ2);
 
+  // specify which loss function to use
   net.use(loss, loss_prime);
 
+  // train for a thousand steps
   net.fit(x_train, y_train, 1000, 0.1);
 
   Eigen::MatrixXd out = net.predict(x_train);

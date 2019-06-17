@@ -15,7 +15,7 @@ class AbstractBaseLayer {
    */
   virtual Eigen::VectorXd forwardPropagation(Eigen::VectorXd input_data) = 0;
   /**
-   * @brief Propagate output back through this layer
+   * @brief Propagate output back through this layer and adjust itself
    * @param output_error Vector containing values to backpropagate
    * @param learningRate The rate for learning
    * @return Vector containing propagated values
