@@ -36,6 +36,7 @@ before_install:
 install:
   - export CC=gcc-8;
   - export CXX=g++-8;
+  - cd /home/travis/build/maede97/NeuronalNetwork
   - ./make.sh
 
 before_deploy:
