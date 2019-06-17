@@ -18,6 +18,7 @@ addons:
       - g++-8
       - gcc-8
       - libeigen3-dev
+
 #Cache doxygen
 cache:
   directories:
@@ -34,7 +35,8 @@ before_install:
 script:
   - export CC=gcc-8;
   - export CXX=g++-8;
-  - ./make.sh
+  - cd /home/travis/NeuronalNetwork
+  - make.sh
 
 deploy:
   provider: pages
