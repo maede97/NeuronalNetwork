@@ -36,8 +36,6 @@ script:
   - export CXX=g++-8;
   - cd /home/travis/build/maede97/NeuronalNetwork
   - ./make.sh
-
-before_deploy:
   - mkdir -p build/doc
   - cd build/doc
   - doxygen ../../doc/Doxyfile.in
