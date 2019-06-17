@@ -35,7 +35,7 @@ before_install:
 install:
   - export CC=gcc-8;
   - export CXX=g++-8;
-  - make.sh
+  - ./make.sh
 
 deploy:
   provider: pages
