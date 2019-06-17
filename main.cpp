@@ -44,6 +44,12 @@ void OR(Eigen::MatrixXd& x_train, Eigen::MatrixXd& y_train) {
   y_train << 0, 1, 1, 1;
 }
 
+void NOT(Eigen::MatrixXd& x_train, Eigen::MatrixXd& y_train) {
+  x_train = Eigen::MatrixXd(2, 1);
+  y_train = Eigen::MatrixXd(2, 1);
+  x_train << 0, 1;
+  y_train << 1, 0;
+}
 int main() {
   srand(time(0));
   auto activation = [](double x) -> double { return tanh(x); };
@@ -66,9 +72,9 @@ int main() {
   Network net = Network();
 
   // Create all Layers
-  FCLayer first(2, 3);
+  FCLayer first(x_train.cols(), 3);
   ActivationLayer activ1(activation, activationPrime);
-  FCLayer second(3, 1);
+  FCLayer second(3, y_train.cols());
   ActivationLayer activ2(activation, activationPrime);
 
   // add Layers in order
@@ -81,11 +87,11 @@ int main() {
 
   net.fit(x_train, y_train, 1000, 0.1);
 
-  std::vector<Eigen::VectorXd> out = net.predict(x_train);
-  for (unsigned int i = 0; i < out.size(); i++) {
-    std::cout << "Test:\t" << out[i].transpose() << "\tshould be equal to\t"
+  Eigen::MatrixXd out = net.predict(x_train);
+  for (unsigned int i = 0; i < out.rows(); i++) {
+    std::cout << "Test:\t" << out.row(i).transpose() << "\tshould be equal to\t"
               << y_train.row(i) << std::endl;
-    assertEqual(y_train.row(i), out[i]);
+    assertEqual(y_train.row(i), out.row(i));
   }
 
   return 0;

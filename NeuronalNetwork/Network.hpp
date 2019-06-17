@@ -7,10 +7,25 @@
 
 #include "Layer.hpp"
 
+/**
+ * @brief Network class
+ */
 class Network {
  public:
+ /**
+ * @brief Default constructor
+ */
   Network() {}
+  /**
+   * @brief Add a new layer
+   * @param layer Pointer to the layer
+   */
   void add(AbstractBaseLayer *layer) { layers.push_back(layer); }
+  /**
+   * @brief Sets loss function and derivative
+   * @param loss_ Loss function
+   * @param lossPrime_ The derivative of the loss functoin
+   */
   void use(std::function<double(Eigen::VectorXd, Eigen::VectorXd)> loss_,
            std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)>
                lossPrime_) {
@@ -18,8 +33,12 @@ class Network {
     lossPrime = lossPrime_;
   }
 
-  // give each input data as a row in the input matrix
-  std::vector<Eigen::VectorXd> predict(Eigen::MatrixXd input_data) {
+  /**
+   * @brief Predict output of data
+   * @param input_data Matrix containing each input data-set as a row
+   * @return A Matrix containing all outputs as rows
+   */
+  Eigen::MatrixXd predict(Eigen::MatrixXd input_data) {
     unsigned int samples = input_data.rows();
     std::vector<Eigen::VectorXd> result;
     Eigen::VectorXd output;
@@ -30,9 +49,20 @@ class Network {
       }
       result.push_back(output);
     }
-    return result;
+    Eigen::MatrixXd resultMat(samples, result[0].size());
+    for(int i = 0; i < result.size(); i++) {
+      resultMat.row(i) = result[i];
+    }
+    return resultMat;
   }
 
+  /**
+   * @brief Train the network
+   * @param x_train Matrix containing all training input data as rows
+   * @param y_train Matrix containing all training output data as rows
+   * @param epochs How long to train
+   * @param learning_rate With which rate to train
+   */
   void fit(Eigen::MatrixXd x_train, Eigen::MatrixXd y_train,
            unsigned int epochs, double learning_rate) {
     unsigned int samples = x_train.rows();
@@ -61,9 +91,9 @@ class Network {
   }
 
  private:
-  std::vector<AbstractBaseLayer *> layers;
-  std::function<double(Eigen::VectorXd, Eigen::VectorXd)> loss;
-  std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)> lossPrime;
+  std::vector<AbstractBaseLayer *> layers; ///< internal storage for layers
+  std::function<double(Eigen::VectorXd, Eigen::VectorXd)> loss; ///< loss function to use
+  std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)> lossPrime; ///< loss derivative to use
 };
 
 #endif
