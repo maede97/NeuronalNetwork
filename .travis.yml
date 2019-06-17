@@ -39,6 +39,7 @@ install:
   - ./make.sh
 
 before_deploy:
+  - mkdir -p build/doc
   - cd build/doc
   - doxygen ../../doc/Doxyfile.in
 
