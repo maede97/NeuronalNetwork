@@ -15,18 +15,10 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - g++-8
-      - gcc-8
       - doxygen
-      - doxygen-doc
-      - doxygen-latex
-      - doxygen-gui
-      - graphviz
       - libeigen3-dev
 
 script:
-  - export CC=gcc-8;
-  - export CXX=g++-8;
   - ./make.sh
 
 deploy:
