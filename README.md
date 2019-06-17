@@ -1,5 +1,6 @@
 # NeuronalNetwork
 [![Build Status](https://travis-ci.com/maede97/NeuronalNetwork.svg?branch=master)](https://travis-ci.com/maede97/NeuronalNetwork)
+
 [![Documentation](https://codedocs.xyz/maede97/SudokuSolver.svg)](https://maede97.github.io/NeuronalNetwork)
 
 This repository contains an example C++ supervised neuronal network.

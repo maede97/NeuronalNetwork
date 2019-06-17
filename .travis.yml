@@ -34,8 +34,6 @@ script:
   - export PATH=$PATH:$DOXY_BINPATH
   - export CC=gcc-8
   - export CXX=g++-8
-  - cd $DOXY_BINPATH;
-  - ls
   - cd /home/travis/build/maede97/NeuronalNetwork
   - ./make.sh
   - mkdir -p build/doc
