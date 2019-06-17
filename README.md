@@ -1,0 +1,2 @@
+# NeuronalNetwork
+C++ supervised NN
