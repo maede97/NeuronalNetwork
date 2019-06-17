@@ -40,7 +40,7 @@ script:
   - ./make.sh
   - mkdir -p build/doc
   - cd build/doc
-  - DOXY_BINPATH/doxygen ../../doc/Doxyfile.in
+  - $DOXY_BINPATH/doxygen ../../doc/Doxyfile.in
 
 deploy:
   provider: pages
