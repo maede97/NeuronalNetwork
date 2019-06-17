@@ -17,16 +17,14 @@ addons:
     packages:
       - g++-8
       - gcc-8
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
       - libeigen3-dev
 
 script:
-  - echo "Installing doxygen"
-  - DOXYGEN_VER=doxygen-1.8.15
-  - DOXYGEN_TAR=${DOXYGEN_VER}.linux.bin.tar.gz
-  - DOXYGEN_URL="http://doxygen.nl/files/${DOXYGEN_TAR}"
-  - wget -O - "${DOXYGEN_URL}" | tar xz -C ${TMPDIR-/tmp} ${DOXYGEN_VER}/bin/doxygen
-  - export PATH="${TMPDIR-/tmp}/${DOXYGEN_VER}/bin:$PATH"
-  - echo "Installed Doxygen"
   - export CC=gcc-8;
   - export CXX=g++-8;
   - ./make.sh
