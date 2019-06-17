@@ -1,6 +1,3 @@
-/**
-@page getting_started Getting Started
-```
 #include <cmath> // for tanh
 
 #include "NeuronalNetwork/includes.hpp"
@@ -57,5 +54,3 @@ int main() {
 
   return 0;
 }
-```
-*/
