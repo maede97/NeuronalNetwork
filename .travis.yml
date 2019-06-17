@@ -37,6 +37,10 @@ install:
   - export CXX=g++-8;
   - ./make.sh
 
+before_deploy:
+  - cd build/doc
+  - doxygen ../../doc/Doxyfile.in
+
 deploy:
   provider: pages
   skip_cleanup: true
