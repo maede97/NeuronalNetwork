@@ -14,7 +14,7 @@ This repository contains an example C++ supervised neuronal network.
 To install, simply run `./make.sh` in the root folder of this repository. This will also automatically run the executable with a simple XOR-Test.
 
 # Example
-Please have a look at the [example.cpp](https://github.com/maede97/NeuronalNetwork/blob/master/main.cpp) file.
+Please have a look at the [example.cpp](https://github.com/maede97/NeuronalNetwork/blob/master/example.cpp) file.
 
 # Further information
 This project was highly inspired by https://medium.com/datadriveninvestor/math-neural-network-from-scratch-in-python-d6da9f29ce65.
