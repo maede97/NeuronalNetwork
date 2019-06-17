@@ -26,6 +26,7 @@ cache:
 
 before_install:
   # Travis has an OLD doxygen build, so we fetch a recent one
+  - pwd
   - export DOXY_BINPATH=/home/travis/doxygen/doxygen-1.8.15/bin
   - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then mkdir -p ~/doxygen && cd ~/doxygen; fi
   - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then wget http://doxygen.nl/files/doxygen-1.8.15.linux.bin.tar.gz; fi
