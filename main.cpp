@@ -64,9 +64,9 @@ int main() {
   Network net = Network();
 
   // Create all Layers
-  FCLayer first(x_train.cols(), 3);
+  FCLayer first(x_train.cols(), 3, "first");
   ActivationLayer activ1(activation, activationPrime);
-  FCLayer second(3, y_train.cols());
+  FCLayer second(3, y_train.cols(),"second");
   ActivationLayer activ2(activation, activationPrime);
 
   // add Layers in order
@@ -81,6 +81,8 @@ int main() {
   // train for a thousand steps
   net.fit(x_train, y_train, 1000, 0.1);
 
+  net.saveConfiguration("");
+  
   Eigen::MatrixXd out = net.predict(x_train);
   for (unsigned int i = 0; i < out.rows(); i++) {
     std::cout << "Test:\t" << out.row(i).transpose() << "\tshould be equal to\t"

@@ -2,6 +2,7 @@
 #define LAYER_HPP
 
 #include <eigen3/Eigen/Dense>
+#include <string>
 
 /**
  * @brief Abstract Layer class
@@ -22,9 +23,20 @@ class AbstractBaseLayer {
    */
   virtual Eigen::VectorXd backwardPropagation(Eigen::VectorXd output_error,
                                               double learningRate) = 0;
+  /**
+   * @brief Saves configuration of weights and bias to disk
+   * @param path Where to write
+   */
+  virtual void saveConfiguration(std::string path) const = 0;
+
+  /**
+   * @brief Loads configuration of weights and bias from disk
+   * @param path Where to write
+   */
+  virtual void loadConfiguration(std::string path) = 0;
 
  protected:
-  Eigen::VectorXd input; ///< internal input of this layer
-  Eigen::VectorXd output; ///< internal output of this layer
+  Eigen::VectorXd input;   ///< internal input of this layer
+  Eigen::VectorXd output;  ///< internal output of this layer
 };
 #endif

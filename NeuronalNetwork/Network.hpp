@@ -12,10 +12,30 @@
  */
 class Network {
  public:
- /**
- * @brief Default constructor
- */
+  /**
+   * @brief Default constructor
+   */
   Network() {}
+
+  /**
+   * @brief Saves the whole Network configuration to disk
+   * @param path Folder to be saved to
+   */
+  void saveConfiguration(std::string path) const {
+    for (auto layer = layers.begin(); layer != layers.end(); layer++) {
+      (*layer)->saveConfiguration(path);
+    }
+  }
+  /**
+   * @brief Loads the whole Network configuration to disk
+   * @param path Folder to be loaded from
+   */
+  void loadConfiguration(std::string path) {
+    for (auto layer = layers.begin(); layer != layers.end(); layer++) {
+      (*layer)->loadConfiguration(path);
+    }
+  }
+
   /**
    * @brief Add a new layer
    * @param layer Pointer to the layer
@@ -38,8 +58,8 @@ class Network {
    * @param input_data Matrix containing each input data-set as a row
    * @return A Matrix containing all outputs as rows
    */
-  Eigen::MatrixXd predict(Eigen::MatrixXd input_data) {
-    unsigned int samples = input_data.rows();
+  Eigen::MatrixXd predict(Eigen::MatrixXd input_data) const {
+    const unsigned int samples = input_data.rows();
     std::vector<Eigen::VectorXd> result;
     Eigen::VectorXd output;
     for (unsigned int i = 0; i < samples; i++) {
@@ -50,7 +70,7 @@ class Network {
       result.push_back(output);
     }
     Eigen::MatrixXd resultMat(samples, result[0].size());
-    for(int i = 0; i < result.size(); i++) {
+    for (int i = 0; i < result.size(); i++) {
       resultMat.row(i) = result[i];
     }
     return resultMat;
@@ -65,7 +85,7 @@ class Network {
    */
   void fit(Eigen::MatrixXd x_train, Eigen::MatrixXd y_train,
            unsigned int epochs, double learning_rate) {
-    unsigned int samples = x_train.rows();
+    const unsigned int samples = x_train.rows();
     Eigen::VectorXd output;
     for (unsigned int i = 0; i < epochs; i++) {
       double err = 0;
@@ -85,15 +105,17 @@ class Network {
         }
       }
       err /= (double)samples;
-      std::cout << "Epoch: " << i + 1 << "\terror: " << err << "\r";
+      std::cout << "Epoch: " << i + 1 << "\terror: " << err << "\r" << std::flush;
     }
     std::cout << std::endl;
   }
 
  private:
-  std::vector<AbstractBaseLayer *> layers; ///< internal storage for layers
-  std::function<double(Eigen::VectorXd, Eigen::VectorXd)> loss; ///< loss function to use
-  std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)> lossPrime; ///< loss derivative to use
+  std::vector<AbstractBaseLayer *> layers;  ///< internal storage for layers
+  std::function<double(Eigen::VectorXd, Eigen::VectorXd)>
+      loss;  ///< loss function to use
+  std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)>
+      lossPrime;  ///< loss derivative to use
 };
 
 #endif

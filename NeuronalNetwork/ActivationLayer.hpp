@@ -29,6 +29,16 @@ class ActivationLayer : public AbstractBaseLayer {
                                       double learningRate) {
     return input.unaryExpr(activationFunctionPrime).cwiseProduct(output_error);
   }
+  /**
+   * @copydoc AbstractBaseLayer::saveConfiguration
+   * This does nothing as nothing has to be saved
+   */
+  void saveConfiguration(std::string path) const {}
+  /**
+   * @copydoc AbstractBaseLayer::loadConfiguration
+   * This does nothing as nothing has to be loaded
+   */
+  void loadConfiguration(std::string path) {}
 
  private:
   std::function<double(double)> activationFunction; ///< activation function
