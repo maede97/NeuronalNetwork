@@ -1,4 +1,4 @@
-# Doxyfile 1.8.16
+# Doxyfile 1.8.15
 
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project.
@@ -464,12 +464,6 @@ EXTRACT_ALL            = YES
 # The default value is: NO.
 
 EXTRACT_PRIVATE        = YES
-
-# If the EXTRACT_PRIV_VIRTUAL tag is set to YES, documented private virtual
-# methods of a class will be included in the documentation.
-# The default value is: NO.
-
-EXTRACT_PRIV_VIRTUAL   = NO
 
 # If the EXTRACT_PACKAGE tag is set to YES, all members with package or internal
 # scope will be included in the documentation.
