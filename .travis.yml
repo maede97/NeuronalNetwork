@@ -16,7 +16,7 @@ cache:
 
 jobs:
   include:
-    - stage: test
+    - stage: Make
       os: linux
       compiler: gcc
       env:
@@ -33,8 +33,15 @@ jobs:
       script: 
         - export CC=gcc-8
         - export CXX=g++-8
+        - ./make.sh
+
+    - stage: Test
+      os: linux
+      compiler: gcc
+      script:
         - ./test.sh
-    - stage: doxygen
+
+    - stage: Doxygen
       os: linux
       compiler: gcc
       script:
