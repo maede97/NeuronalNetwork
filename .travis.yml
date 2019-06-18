@@ -9,21 +9,11 @@ dist: xenial
 language: cpp
 compiler: gcc
 
-#Cache doxygen
-cache:
-  directories:
-    - /home/travis/doxygen/doxygen-1.8.15/bin
-
 jobs:
   include:
     - stage: Make
-      os: linux
-      compiler: gcc
-      env:
-        - MAKEFLAGS='-j$(nproc)'
       addons:
         apt:
-          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
@@ -36,14 +26,13 @@ jobs:
         - ./make.sh
 
     - stage: Test
-      os: linux
-      compiler: gcc
       script:
         - ./test.sh
 
     - stage: Doxygen
-      os: linux
-      compiler: gcc
+      cache:
+        directories:
+          - /home/travis/doxygen/doxygen-1.8.15/bin
       script:
         # Travis has an OLD doxygen build, so we fetch a recent one
         - export DOXY_BINPATH=/home/travis/doxygen/doxygen-1.8.15/bin
