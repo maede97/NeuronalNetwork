@@ -1,7 +1,8 @@
-#include <fstream>
 #include <NeuronalNetwork/All>
+#include <fstream>
 
-void readFileToMatrix(Eigen::MatrixXd& input, const char* filename, double divisor) {
+void readFileToMatrix(Eigen::MatrixXd& input, const char* filename,
+                      double divisor) {
   // lines: how many lines there should be after reading
   // cols: how many columns the matrix has (=input nodes)
   std::ifstream in(filename);
@@ -39,19 +40,19 @@ int main() {
 
   Eigen::MatrixXd x_data = Eigen::MatrixXd::Zero(lines, 28 * 28);
   Eigen::MatrixXd y_data = Eigen::MatrixXd::Zero(lines, 1);
-  readFileToMatrix(x_data, "./examples/input/images.txt",255.);
-  readFileToMatrix(y_data, "./examples/input/labels.txt",10.);
+  readFileToMatrix(x_data, "./examples/input/images.txt", 255.);
+  readFileToMatrix(y_data, "./examples/input/labels.txt", 10.);
 
   Eigen::MatrixXd x_test = Eigen::MatrixXd::Zero(test_lines, 28 * 28);
   Eigen::MatrixXd y_test = Eigen::MatrixXd::Zero(test_lines, 1);
-  readFileToMatrix(x_test, "./examples/input/test_images.txt",255.);
-  readFileToMatrix(y_test, "./examples/input/test_labels.txt",10.);
+  readFileToMatrix(x_test, "./examples/input/test_images.txt", 255.);
+  readFileToMatrix(y_test, "./examples/input/test_labels.txt", 10.);
 
   Network net = Network();
-  FCLayer first(x_data.cols(), 300,"first");
-  ActivationLayer a1(activation, activationPrime);
-  FCLayer second(300, 1,"second");
-  ActivationLayer a2(activation, activationPrime);
+  FCLayer first(x_data.cols(), 300, "first");
+  ActivationLayer a1(300, activation, activationPrime);
+  FCLayer second(300, 1, "second");
+  ActivationLayer a2(1, activation, activationPrime);
 
   net.add(&first);
   net.add(&a1);

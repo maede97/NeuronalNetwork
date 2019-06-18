@@ -2,7 +2,7 @@
 #define FCLAYER_HPP
 
 #include <fstream>
-#include "Layer.hpp"
+#include "AbstractBaseLayer.hpp"
 
 /**
  * @brief Fully Connected Layer
@@ -17,8 +17,10 @@ class FCLayer : public AbstractBaseLayer {
    */
   FCLayer(unsigned int input_size, unsigned int output_size,
           std::string name_ = "") {
+    // set random and default vectors
     weights = Eigen::MatrixXd::Random(input_size, output_size);
     bias = Eigen::MatrixXd::Random(output_size, 1);
+    input = Eigen::VectorXd::Zero(input_size);
     name = name_;
   }
   /**
@@ -26,8 +28,7 @@ class FCLayer : public AbstractBaseLayer {
    */
   Eigen::VectorXd forwardPropagation(Eigen::VectorXd input_data) {
     input = input_data;
-    output = weights.transpose() * input + bias;
-    return output;
+    return weights.transpose() * input + bias;
   }
   /**
    * @copydoc AbstractBaseLayer::backwardPropagation
@@ -37,7 +38,6 @@ class FCLayer : public AbstractBaseLayer {
     Eigen::VectorXd input_error =
         output_error.transpose() * weights.transpose();
     Eigen::MatrixXd weights_error = input * output_error.transpose();
-
     weights -= learningRate * weights_error;
     bias -= learningRate * output_error;
     return input_error;

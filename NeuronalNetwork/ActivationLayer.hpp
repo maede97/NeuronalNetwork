@@ -2,25 +2,31 @@
 #define ACTIVATION_LAYER_HPP
 
 #include <functional>
-#include "Layer.hpp"
+#include "AbstractBaseLayer.hpp"
 
 /**
  * @brief Activation function as it's own layer
  */
 class ActivationLayer : public AbstractBaseLayer {
  public:
-  ActivationLayer(std::function<double(double)> activationFunction_,
+  /**
+   * @brief Construct an ActivationLayer
+   * @param input_size Size for this Layer
+   * @param activationFunction Use this function to activate (i.e. sigmoid)
+   * @param activationFunctionPrime_ The derivative of the function
+   */
+  ActivationLayer(const unsigned int input_size, std::function<double(double)> activationFunction_,
                   std::function<double(double)> activationFunctionPrime_) {
     activationFunction = activationFunction_;
     activationFunctionPrime = activationFunctionPrime_;
+    input = Eigen::VectorXd(input_size);
   }
   /**
    * @copydoc AbstractBaseLayer::forwardPropagation
    */
   Eigen::VectorXd forwardPropagation(Eigen::VectorXd input_data) {
     input = input_data;
-    output = input.unaryExpr(activationFunction);
-    return output;
+    return input.unaryExpr(activationFunction);
   }
   /**
    * @copydoc AbstractBaseLayer::backwardPropagation

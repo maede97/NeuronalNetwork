@@ -28,9 +28,9 @@ int main() {
 
   // Create all Layers
   FCLayer first(2, 3);  // 2 input, 3 hidden
-  ActivationLayer activ1(activation, activationPrime);
+  ActivationLayer activ1(3, activation, activationPrime);
   FCLayer second(3, 1);  // 3 hidden, 1 output
-  ActivationLayer activ2(activation, activationPrime);
+  ActivationLayer activ2(1, activation, activationPrime);
 
   // add Layers in order
   net.add(&first);

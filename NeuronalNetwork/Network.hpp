@@ -4,8 +4,9 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <cassert>
 
-#include "Layer.hpp"
+#include "AbstractBaseLayer.hpp"
 
 /**
  * @brief Network class
@@ -85,6 +86,7 @@ class Network {
    */
   void fit(Eigen::MatrixXd x_train, Eigen::MatrixXd y_train,
            unsigned int epochs, double learning_rate) {
+    assert(loss && lossPrime && "Loss function not initialised.");
     const unsigned int samples = x_train.rows();
     Eigen::VectorXd output;
     for (unsigned int i = 0; i < epochs; i++) {
@@ -105,7 +107,8 @@ class Network {
         }
       }
       err /= (double)samples;
-      std::cout << "Epoch: " << i + 1 << "\terror: " << err << "\r" << std::flush;
+      std::cout << "Epoch: " << i + 1 << "\terror: " << err << "\r"
+                << std::flush;
     }
     std::cout << std::endl;
   }

@@ -37,6 +37,5 @@ class AbstractBaseLayer {
 
  protected:
   Eigen::VectorXd input;   ///< internal input of this layer
-  Eigen::VectorXd output;  ///< internal output of this layer
 };
 #endif
