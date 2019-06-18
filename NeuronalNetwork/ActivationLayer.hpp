@@ -12,7 +12,7 @@ class ActivationLayer : public AbstractBaseLayer {
   /**
    * @brief Construct an ActivationLayer
    * @param input_size Size for this Layer
-   * @param activationFunction Use this function to activate (i.e. sigmoid)
+   * @param activationFunction_ Use this function to activate (i.e. sigmoid)
    * @param activationFunctionPrime_ The derivative of the function
    */
   ActivationLayer(const unsigned int input_size, std::function<double(double)> activationFunction_,
