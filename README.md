@@ -8,12 +8,11 @@ This repository contains an example C++ supervised neuronal network.
 # Installation
 ## Requirements
 * Eigen3
-* Cmake
+* CMake
 * Make
 * C++
-* Doxygen (for Documentation)
 
-To install, simply run `./make.sh` in the root folder of this repository. This will also automatically run the executable with a simple XOR-Test.
+To install, simply run `./example.sh` in the root folder of this repository. This will also automatically run the executable with a simple XOR-Test.
 
 # Example
 Please have a look at the [example.cpp](https://github.com/maede97/NeuronalNetwork/blob/master/example.cpp) file or just copy this code here:
@@ -76,5 +75,6 @@ int main() {
 }
 ```
 
-# Further information
-This project was highly inspired by https://medium.com/datadriveninvestor/math-neural-network-from-scratch-in-python-d6da9f29ce65.
+# Further information / Source
+ - https://medium.com/datadriveninvestor/math-neural-network-from-scratch-in-python-d6da9f29ce65
+ - http://yann.lecun.com/exdb/mnist/
