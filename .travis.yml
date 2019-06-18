@@ -23,7 +23,6 @@ script:
   - export PATH=$PATH:$DOXY_BINPATH
   - mkdir -p build/doc
   - cd build/doc
-  - pwd
   - $DOXY_BINPATH/doxygen ../../doc/Doxyfile.in
 
 deploy:
