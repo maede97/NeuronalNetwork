@@ -31,12 +31,12 @@ class ActivationLayer : public AbstractBaseLayer {
   }
   /**
    * @copydoc AbstractBaseLayer::saveConfiguration
-   * This does nothing as nothing has to be saved
+   * @note This does nothing as nothing has to be saved.
    */
   void saveConfiguration(std::string path) const {}
   /**
    * @copydoc AbstractBaseLayer::loadConfiguration
-   * This does nothing as nothing has to be loaded
+   * @note This does nothing as nothing has to be loaded.
    */
   void loadConfiguration(std::string path) {}
 
