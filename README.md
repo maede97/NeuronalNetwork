@@ -12,10 +12,10 @@ This repository contains an example C++ supervised neuronal network.
 * Make
 * C++
 
-To install, simply run `./example.sh` in the root folder of this repository. This will also automatically run the executable with a simple XOR-Test.
+To install, simply run `./make.sh` in the root folder of this repository. To run the tests, execute `./test.sh`.
 
 # Example
-Please have a look at the [example.cpp](https://github.com/maede97/NeuronalNetwork/blob/master/example.cpp) file or just copy this code here:
+Please have a look at the examples or just copy this code here:
 ```cpp
 #include <cmath> // for tanh
 
@@ -74,6 +74,9 @@ int main() {
   return 0;
 }
 ```
+
+# Documentation
+This code is documented using Doxygen. Because of travis, this is not automatically done. The Doxygen configuration can be found [here](https://github.com/maede97/NeuronalNetwork/blob/master/doc/Doxyfile.in).
 
 # Further information / Source
  - https://medium.com/datadriveninvestor/math-neural-network-from-scratch-in-python-d6da9f29ce65

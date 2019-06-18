@@ -11,6 +11,7 @@ link_directories(
 
 set(TESTS
     Linker
+    Layers
 )
 
 foreach(TEST_NAME ${TESTS})

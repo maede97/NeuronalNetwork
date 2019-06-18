@@ -9,8 +9,6 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed.")
 endif()
 
-
-
 # Example build by default ON
 option(BUILD_EXAMPLES "Build examples" ON)
 # Unit test build by default ON
