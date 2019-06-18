@@ -1,6 +1,5 @@
-#include <cmath> // for tanh
-
-#include "NeuronalNetwork/includes.hpp"
+#include <cmath>  // for tanh
+#include <NeuronalNetwork/All>
 
 int main() {
   // create activation and derivative
@@ -8,7 +7,7 @@ int main() {
   auto activationPrime = [](double x) -> double {
     return 1 - tanh(x) * tanh(x);
   };
-  
+
   // create loss and derivative
   auto loss = [](Eigen::VectorXd y_true, Eigen::VectorXd y_pred) -> double {
     return (y_pred - y_true).squaredNorm() / ((double)y_true.size());
@@ -28,9 +27,9 @@ int main() {
   Network net = Network();
 
   // Create all Layers
-  FCLayer first(2, 3); // 2 input, 3 hidden
+  FCLayer first(2, 3);  // 2 input, 3 hidden
   ActivationLayer activ1(activation, activationPrime);
-  FCLayer second(3, 1); // 3 hidden, 1 output
+  FCLayer second(3, 1);  // 3 hidden, 1 output
   ActivationLayer activ2(activation, activationPrime);
 
   // add Layers in order
@@ -48,8 +47,8 @@ int main() {
   // get final output
   Eigen::MatrixXd out = net.predict(x_train);
   for (unsigned int i = 0; i < out.rows(); i++) {
-    std::cout << "Test:\t" << out.row(i).transpose() << "\t"
-        << y_train.row(i) << std::endl;
+    std::cout << "Test:\t" << out.row(i).transpose() << "\t" << y_train.row(i)
+              << std::endl;
   }
 
   return 0;

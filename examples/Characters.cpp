@@ -1,5 +1,5 @@
 #include <fstream>
-#include "NeuronalNetwork/includes.hpp"
+#include <NeuronalNetwork/All>
 
 void readFileToMatrix(Eigen::MatrixXd& input, const char* filename, double divisor) {
   // lines: how many lines there should be after reading
@@ -39,13 +39,13 @@ int main() {
 
   Eigen::MatrixXd x_data = Eigen::MatrixXd::Zero(lines, 28 * 28);
   Eigen::MatrixXd y_data = Eigen::MatrixXd::Zero(lines, 1);
-  readFileToMatrix(x_data, "./test/images.txt",255.);
-  readFileToMatrix(y_data, "./test/labels.txt",10.);
+  readFileToMatrix(x_data, "./examples/input/images.txt",255.);
+  readFileToMatrix(y_data, "./examples/input/labels.txt",10.);
 
   Eigen::MatrixXd x_test = Eigen::MatrixXd::Zero(test_lines, 28 * 28);
   Eigen::MatrixXd y_test = Eigen::MatrixXd::Zero(test_lines, 1);
-  readFileToMatrix(x_test, "./test/test_images.txt",255.);
-  readFileToMatrix(y_test, "./test/test_labels.txt",10.);
+  readFileToMatrix(x_test, "./examples/input/test_images.txt",255.);
+  readFileToMatrix(y_test, "./examples/input/test_labels.txt",10.);
 
   Network net = Network();
   FCLayer first(x_data.cols(), 300,"first");
