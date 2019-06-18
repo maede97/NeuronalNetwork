@@ -6,29 +6,50 @@ branches:
 
 os: linux
 dist: xenial
-
 language: cpp
+compiler: gcc
 
 #Cache doxygen
 cache:
   directories:
     - /home/travis/doxygen/doxygen-1.8.15/bin
 
-script:
-  # Travis has an OLD doxygen build, so we fetch a recent one
-  - export DOXY_BINPATH=/home/travis/doxygen/doxygen-1.8.15/bin
-  - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then mkdir -p ~/doxygen && cd ~/doxygen; fi
-  - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then wget http://doxygen.nl/files/doxygen-1.8.15.linux.bin.tar.gz; fi
-  - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then tar xzf doxygen-1.8.15.linux.bin.tar.gz; fi
-  - export PATH=$PATH:$DOXY_BINPATH
-  - mkdir -p build/doc
-  - cd build/doc
-  - $DOXY_BINPATH/doxygen ../../doc/Doxyfile.in
-
-deploy:
-  provider: pages
-  skip_cleanup: true
-  local_dir: build/doc/html
-  github_token: $GH_REPO_TOKEN
-  on:
-    branch: master
+jobs:
+  include:
+    - stage: test
+      os: linux
+      compiler: gcc
+      env:
+        - MAKEFLAGS='-j$(nproc)'
+      addons:
+        apt:
+          update: true
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - gcc-8
+      script: 
+        - export CC=gcc-8
+        - export CXX=g++-8
+        - ./test.sh
+    - stage: doxygen
+      os: linux
+      compiler: gcc
+      script:
+        # Travis has an OLD doxygen build, so we fetch a recent one
+        - export DOXY_BINPATH=/home/travis/doxygen/doxygen-1.8.15/bin
+        - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then mkdir -p ~/doxygen && cd ~/doxygen; fi
+        - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then wget http://doxygen.nl/files/doxygen-1.8.15.linux.bin.tar.gz; fi
+        - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then tar xzf doxygen-1.8.15.linux.bin.tar.gz; fi
+        - export PATH=$PATH:$DOXY_BINPATH
+        - mkdir -p build/doc
+        - cd build/doc
+        - $DOXY_BINPATH/doxygen ../../doc/Doxyfile.in
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        local_dir: build/doc/html
+        github_token: $GH_REPO_TOKEN
+        on:
+          branch: master
