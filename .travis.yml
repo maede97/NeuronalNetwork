@@ -11,7 +11,7 @@ compiler: gcc
 
 jobs:
   include:
-    - stage: Make
+    - stage: Make and Test
       addons:
         apt:
           sources:
@@ -23,10 +23,6 @@ jobs:
       script: 
         - export CC=gcc-8
         - export CXX=g++-8
-        - ./make.sh
-
-    - stage: Test
-      script:
         - ./test.sh
 
     - stage: Doxygen
