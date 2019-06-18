@@ -7,19 +7,6 @@ branches:
 os: linux
 dist: xenial
 
-language: cpp
-compiler: gcc
-
-addons:
-  apt:
-    update: true
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-8
-      - gcc-8
-      - libeigen3-dev
-
 #Cache doxygen
 cache:
   directories:
@@ -32,10 +19,6 @@ script:
   - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then wget http://doxygen.nl/files/doxygen-1.8.15.linux.bin.tar.gz; fi
   - if [ ! -e "$DOXY_BINPATH/doxygen" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then tar xzf doxygen-1.8.15.linux.bin.tar.gz; fi
   - export PATH=$PATH:$DOXY_BINPATH
-  - export CC=gcc-8
-  - export CXX=g++-8
-  - cd /home/travis/build/maede97/NeuronalNetwork
-  - ./make.sh
   - mkdir -p build/doc
   - cd build/doc
   - $DOXY_BINPATH/doxygen ../../doc/Doxyfile.in
