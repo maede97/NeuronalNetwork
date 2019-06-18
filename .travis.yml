@@ -29,6 +29,7 @@ jobs:
           packages:
             - g++-8
             - gcc-8
+            - libeigen3-dev
       script: 
         - export CC=gcc-8
         - export CXX=g++-8
