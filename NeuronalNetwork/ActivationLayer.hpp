@@ -12,43 +12,46 @@ class ActivationLayer : public AbstractBaseLayer {
   /**
    * @brief Construct an ActivationLayer
    * @param input_size Size for this Layer
-   * @param activationFunction_ Use this function to activate (i.e. sigmoid)
-   * @param activationFunctionPrime_ The derivative of the function
+   * @param activationFunction Use this function to activate (i.e. sigmoid)
+   * @param activationFunctionPrime The derivative of the function
    */
-  ActivationLayer(const unsigned int input_size, std::function<double(double)> activationFunction_,
-                  std::function<double(double)> activationFunctionPrime_) {
-    activationFunction = activationFunction_;
-    activationFunctionPrime = activationFunctionPrime_;
-    input = Eigen::VectorXd(input_size);
+  ActivationLayer(const unsigned int input_size,
+                  std::function<double(double)> activationFunction,
+                  std::function<double(double)> activationFunctionPrime) {
+    activationFunction_ = activationFunction;
+    activationFunctionPrime_ = activationFunctionPrime;
+    input_ = Eigen::VectorXd(input_size);
   }
   /**
    * @copydoc AbstractBaseLayer::forwardPropagation
    */
-  Eigen::VectorXd forwardPropagation(Eigen::VectorXd input_data) {
-    input = input_data;
-    return input.unaryExpr(activationFunction);
+  Eigen::VectorXd forwardPropagation(const Eigen::VectorXd& input_data) {
+    input_ = input_data;
+    return input_.unaryExpr(activationFunction_);
   }
   /**
    * @copydoc AbstractBaseLayer::backwardPropagation
    */
-  Eigen::VectorXd backwardPropagation(Eigen::VectorXd output_error,
-                                      double learningRate) {
-    return input.unaryExpr(activationFunctionPrime).cwiseProduct(output_error);
+  Eigen::VectorXd backwardPropagation(const Eigen::VectorXd& output_error,
+                                      const double learningRate) {
+    return input_.unaryExpr(activationFunctionPrime_)
+        .cwiseProduct(output_error);
   }
   /**
    * @copydoc AbstractBaseLayer::saveConfiguration
    * @note This does nothing as nothing has to be saved.
    */
-  void saveConfiguration(std::string path) const {}
+  void saveConfiguration(const std::string& path) const {}
   /**
    * @copydoc AbstractBaseLayer::loadConfiguration
    * @note This does nothing as nothing has to be loaded.
    */
-  void loadConfiguration(std::string path) {}
+  void loadConfiguration(const std::string& path) {}
 
  private:
-  std::function<double(double)> activationFunction; ///< activation function
-  std::function<double(double)> activationFunctionPrime; ///< derivative of activation function
+  std::function<double(double)> activationFunction_;  ///< activation function
+  std::function<double(double)>
+      activationFunctionPrime_;  ///< derivative of activation function
 };
 
 #endif

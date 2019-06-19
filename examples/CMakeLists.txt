@@ -6,12 +6,13 @@ include_directories(
 )
 
 link_directories(
-  ${PROJECT_BINARY_DIR}/graphlib
+  ${PROJECT_BINARY_DIR}/NeuronalNetwork
 )
 
 set(EXAMPLES
     Characters
     Example
+    BinaryAdder
 )
 
 foreach(EXAMPLE_NAME ${EXAMPLES})

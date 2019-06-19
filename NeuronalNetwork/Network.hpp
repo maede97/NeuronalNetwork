@@ -1,12 +1,13 @@
 #ifndef NETWORK_HPP
 #define NETWORK_HPP
 
+#include <cassert>
 #include <functional>
 #include <iostream>
 #include <vector>
-#include <cassert>
 
 #include "AbstractBaseLayer.hpp"
+#include "DataSet.hpp"
 
 /**
  * @brief Network class
@@ -22,8 +23,8 @@ class Network {
    * @brief Saves the whole Network configuration to disk
    * @param path Folder to be saved to
    */
-  void saveConfiguration(std::string path) const {
-    for (auto layer = layers.begin(); layer != layers.end(); layer++) {
+  void saveConfiguration(const std::string& path) const {
+    for (auto layer = layers_.begin(); layer != layers_.end(); layer++) {
       (*layer)->saveConfiguration(path);
     }
   }
@@ -31,8 +32,8 @@ class Network {
    * @brief Loads the whole Network configuration to disk
    * @param path Folder to be loaded from
    */
-  void loadConfiguration(std::string path) {
-    for (auto layer = layers.begin(); layer != layers.end(); layer++) {
+  void loadConfiguration(const std::string& path) {
+    for (auto layer = layers_.begin(); layer != layers_.end(); layer++) {
       (*layer)->loadConfiguration(path);
     }
   }
@@ -41,31 +42,36 @@ class Network {
    * @brief Add a new layer
    * @param layer Pointer to the layer
    */
-  void add(AbstractBaseLayer *layer) { layers.push_back(layer); }
+  void add(AbstractBaseLayer *layer) { layers_.push_back(layer); }
   /**
    * @brief Sets loss function and derivative
-   * @param loss_ Loss function
-   * @param lossPrime_ The derivative of the loss functoin
+   * @param loss Loss function
+   * @param lossPrime The derivative of the loss functoin
    */
-  void use(std::function<double(Eigen::VectorXd, Eigen::VectorXd)> loss_,
+  void use(std::function<double(Eigen::VectorXd, Eigen::VectorXd)> loss,
            std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)>
-               lossPrime_) {
-    loss = loss_;
-    lossPrime = lossPrime_;
+               lossPrime) {
+    loss_ = loss;
+    lossPrime_ = lossPrime;
   }
 
   /**
+   * @brief Set DataSet
+   * @param set The DataSet to use
+   */
+  void setData(const DataSet& set) { set_ = set; }
+
+  /**
    * @brief Predict output of data
-   * @param input_data Matrix containing each input data-set as a row
    * @return A Matrix containing all outputs as rows
    */
-  Eigen::MatrixXd predict(Eigen::MatrixXd input_data) const {
-    const unsigned int samples = input_data.rows();
+  Eigen::MatrixXd predict() const {
+    const unsigned int samples = set_.getInputTestData().rows();
     std::vector<Eigen::VectorXd> result;
     Eigen::VectorXd output;
     for (unsigned int i = 0; i < samples; i++) {
-      output = input_data.row(i).transpose();
-      for (auto layer = layers.begin(); layer != layers.end(); layer++) {
+      output = set_.getInputTestData().row(i).transpose();
+      for (auto layer = layers_.begin(); layer != layers_.end(); layer++) {
         output = (*layer)->forwardPropagation(output);
       }
       result.push_back(output);
@@ -79,29 +85,27 @@ class Network {
 
   /**
    * @brief Train the network
-   * @param x_train Matrix containing all training input data as rows
-   * @param y_train Matrix containing all training output data as rows
    * @param epochs How long to train
    * @param learning_rate With which rate to train
    */
-  void fit(Eigen::MatrixXd x_train, Eigen::MatrixXd y_train,
-           unsigned int epochs, double learning_rate) {
-    assert(loss && lossPrime && "Loss function not initialised.");
-    const unsigned int samples = x_train.rows();
+  void fit(const unsigned int epochs, const double learning_rate) {
+    assert(loss_ && lossPrime_ && "Loss function not initialised.");
+    const unsigned int samples = set_.getInputTrainingData().rows();
     Eigen::VectorXd output;
     for (unsigned int i = 0; i < epochs; i++) {
       double err = 0;
       for (unsigned int j = 0; j < samples; j++) {
-        output = x_train.row(j).transpose();
-        for (auto layer = layers.begin(); layer != layers.end(); layer++) {
+        output = set_.getInputTrainingData().row(j).transpose();
+        for (auto layer = layers_.begin(); layer != layers_.end(); layer++) {
           output = (*layer)->forwardPropagation(output);
         }
         // compute for display purpose
-        err += loss(y_train.row(j).transpose(), output);
+        err += loss_(set_.getOutputTrainingData().row(j).transpose(), output);
 
         // backwards propagation
-        Eigen::VectorXd error = lossPrime(y_train.row(j).transpose(), output);
-        for (auto layer = layers.end() - 1; layer + 1 != layers.begin();
+        Eigen::VectorXd error =
+            lossPrime_(set_.getOutputTrainingData().row(j).transpose(), output);
+        for (auto layer = layers_.end() - 1; layer + 1 != layers_.begin();
              layer--) {
           error = (*layer)->backwardPropagation(error, learning_rate);
         }
@@ -114,11 +118,12 @@ class Network {
   }
 
  private:
-  std::vector<AbstractBaseLayer *> layers;  ///< internal storage for layers
+  std::vector<AbstractBaseLayer *> layers_;  ///< internal storage for layers
   std::function<double(Eigen::VectorXd, Eigen::VectorXd)>
-      loss;  ///< loss function to use
+      loss_;  ///< loss function to use
   std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)>
-      lossPrime;  ///< loss derivative to use
+      lossPrime_;  ///< loss derivative to use
+  DataSet set_;
 };
 
 #endif

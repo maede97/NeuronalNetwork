@@ -48,7 +48,18 @@ int main() {
   readFileToMatrix(x_test, "./examples/input/test_images.txt", 255.);
   readFileToMatrix(y_test, "./examples/input/test_labels.txt", 10.);
 
+  // generate DataSet
+  DataSet data(28*28, 1);
+  for (unsigned int row = 0; row < x_data.rows(); row++) {
+    data.addTrainingSet(x_data.row(row).transpose(),
+                        y_data.row(row).transpose());
+  }
+  for (unsigned int row = 0; row < x_test.rows(); row++) {
+    data.addTestSet(x_test.row(row).transpose());
+  }
+
   Network net = Network();
+  net.setData(data);
   FCLayer first(x_data.cols(), 300, "first");
   ActivationLayer a1(300, activation, activationPrime);
   FCLayer second(300, 1, "second");
@@ -62,12 +73,12 @@ int main() {
   net.use(loss, loss_prime);
   std::cout << "Starting training..." << std::endl;
   net.saveConfiguration("models/zero_");
-  net.fit(x_data, y_data, epochs, learning_rate);
+  net.fit(epochs, learning_rate);
   net.saveConfiguration("models/first_");
-  net.fit(x_data, y_data, 1, learning_rate);
+  net.fit(1, learning_rate);
   net.saveConfiguration("models/second_");
   std::cout << "Done. Predicting..." << std::endl;
-  Eigen::MatrixXd out = net.predict(x_test);
+  Eigen::MatrixXd out = net.predict();
   std::cout << "Predicted: " << out.transpose() << std::endl;
   std::cout << "True:      " << y_test.transpose() << std::endl;
 

@@ -1,5 +1,5 @@
-#include <cmath>  // for tanh
 #include <NeuronalNetwork/All>
+#include <cmath>  // for tanh
 
 int main() {
   // create activation and derivative
@@ -18,13 +18,20 @@ int main() {
   };
 
   // create data
-  Eigen::MatrixXd x_train(4, 2);
-  Eigen::MatrixXd y_train(4, 1);
-  x_train << 0, 0, 0, 1, 1, 0, 1, 1;
-  y_train << 0, 1, 1, 0;
+  DataSet data(2,1);
+  data.addTrainingSet(Eigen::Vector2d(0, 0), Eigen::VectorXd::Zero(1));
+  data.addTrainingSet(Eigen::Vector2d(0, 1), Eigen::VectorXd::Ones(1));
+  data.addTrainingSet(Eigen::Vector2d(1, 0), Eigen::VectorXd::Ones(1));
+  data.addTrainingSet(Eigen::Vector2d(1, 1), Eigen::VectorXd::Zero(1));
+
+  data.addTestSet(Eigen::Vector2d(0, 0));
+  data.addTestSet(Eigen::Vector2d(0, 1));
+  data.addTestSet(Eigen::Vector2d(1, 0));
+  data.addTestSet(Eigen::Vector2d(1, 1));
 
   // create Network
   Network net = Network();
+  net.setData(data);
 
   // Create all Layers
   FCLayer first(2, 3);  // 2 input, 3 hidden
@@ -42,13 +49,13 @@ int main() {
   net.use(loss, loss_prime);
 
   // train network
-  net.fit(x_train, y_train, 1000, 0.1);
+  net.fit(1000, 0.1);
 
   // get final output
-  Eigen::MatrixXd out = net.predict(x_train);
+  Eigen::MatrixXd out = net.predict();
   for (unsigned int i = 0; i < out.rows(); i++) {
-    std::cout << "Test:\t" << out.row(i).transpose() << "\t" << y_train.row(i)
-              << std::endl;
+    std::cout << "Test:\t" << out.row(i).transpose() << "\t"
+              << data.getOutputTrainingData().row(i) << std::endl;
   }
 
   return 0;

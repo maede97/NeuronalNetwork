@@ -13,61 +13,63 @@ class FCLayer : public AbstractBaseLayer {
    * @brief Create FCLayer
    * @param input_size How many inputs there are
    * @param output_size How many outputs there are
-   * @param name_ Optional name for this layer
+   * @param name Optional name for this layer
    */
-  FCLayer(unsigned int input_size, unsigned int output_size,
-          std::string name_ = "") {
+  FCLayer(const unsigned int input_size, const unsigned int output_size,
+          std::string name = "") {
     // set random and default vectors
-    weights = Eigen::MatrixXd::Random(input_size, output_size);
-    bias = Eigen::MatrixXd::Random(output_size, 1);
-    input = Eigen::VectorXd::Zero(input_size);
-    name = name_;
+    weights_ = Eigen::MatrixXd::Random(input_size, output_size);
+    bias_ = Eigen::MatrixXd::Random(output_size, 1);
+    input_ = Eigen::VectorXd::Zero(input_size);
+    name_ = name;
   }
+
   /**
    * @copydoc AbstractBaseLayer::forwardPropagation
    */
-  Eigen::VectorXd forwardPropagation(Eigen::VectorXd input_data) {
-    input = input_data;
-    return weights.transpose() * input + bias;
+  Eigen::VectorXd forwardPropagation(const Eigen::VectorXd& input_data) {
+    input_ = input_data;
+    return weights_.transpose() * input_ + bias_;
   }
+
   /**
    * @copydoc AbstractBaseLayer::backwardPropagation
    */
-  Eigen::VectorXd backwardPropagation(Eigen::VectorXd output_error,
-                                      double learningRate) {
+  Eigen::VectorXd backwardPropagation(const Eigen::VectorXd& output_error,
+                                      const double learningRate) {
     Eigen::VectorXd input_error =
-        output_error.transpose() * weights.transpose();
-    Eigen::MatrixXd weights_error = input * output_error.transpose();
-    weights -= learningRate * weights_error;
-    bias -= learningRate * output_error;
+        output_error.transpose() * weights_.transpose();
+    Eigen::MatrixXd weights_error = input_ * output_error.transpose();
+    weights_ -= learningRate * weights_error;
+    bias_ -= learningRate * output_error;
     return input_error;
   }
 
   /**
    * @copydoc AbstractBaseLayer::saveConfiguration
    */
-  void saveConfiguration(std::string path) const {
-    saveWeights(path + name + "Weights.txt");
-    saveBias(path + name + "Bias.txt");
+  void saveConfiguration(const std::string& path) const {
+    saveWeights(path + name_ + "Weights.txt");
+    saveBias(path + name_ + "Bias.txt");
   }
 
   /**
    * @copydoc AbstractBaseLayer::loadConfiguration
    */
-  void loadConfiguration(std::string path) {
-    loadWeights(path + name + "Weights.txt");
-    loadBias(path + name + "Bias.txt");
+  void loadConfiguration(const std::string& path) {
+    loadWeights(path + name_ + "Weights.txt");
+    loadBias(path + name_ + "Bias.txt");
   }
 
   /**
    * @brief Saves weights to disk
    * @param filename Where to write
    */
-  void saveWeights(std::string filename) const {
+  void saveWeights(const std::string& filename) const {
     std::ofstream out(filename);
-    for (unsigned int col = 0; col < weights.cols(); col++) {
-      for (unsigned int row = 0; row < weights.rows(); row++) {
-        out << weights(row, col) << " ";
+    for (unsigned int col = 0; col < weights_.cols(); col++) {
+      for (unsigned int row = 0; row < weights_.rows(); row++) {
+        out << weights_(row, col) << " ";
       }
       out << std::endl;
     }
@@ -78,10 +80,10 @@ class FCLayer : public AbstractBaseLayer {
    * @brief Saves bias to disk
    * @param filename Where to write
    */
-  void saveBias(std::string filename) const {
+  void saveBias(const std::string& filename) const {
     std::ofstream out(filename);
-    for (unsigned int row = 0; row < bias.size(); row++) {
-      out << bias(row) << " ";
+    for (unsigned int row = 0; row < bias_.size(); row++) {
+      out << bias_(row) << " ";
     }
     out << std::endl;
 
@@ -92,13 +94,13 @@ class FCLayer : public AbstractBaseLayer {
    * @brief Loads weights from disk
    * @param filename Where to write
    */
-  void loadWeights(std::string filename) {
+  void loadWeights(const std::string& filename) {
     std::ifstream in(filename);
     double value;
-    for (unsigned int col = 0; col < weights.cols(); col++) {
-      for (unsigned int row = 0; row < weights.rows(); row++) {
+    for (unsigned int col = 0; col < weights_.cols(); col++) {
+      for (unsigned int row = 0; row < weights_.rows(); row++) {
         in >> value;
-        weights(row, col) = value;
+        weights_(row, col) = value;
       }
     }
     in.close();
@@ -108,20 +110,20 @@ class FCLayer : public AbstractBaseLayer {
    * @brief Loads bias from disk
    * @param filename Where to write
    */
-  void loadBias(std::string filename) {
+  void loadBias(const std::string& filename) {
     std::ifstream in(filename);
     double value;
-    for (unsigned int row = 0; row < bias.size(); row++) {
+    for (unsigned int row = 0; row < bias_.size(); row++) {
       in >> value;
-      bias(row) = value;
+      bias_(row) = value;
     }
     in.close();
   }
 
  private:
-  Eigen::MatrixXd weights;  ///< internal weights
-  Eigen::VectorXd bias;     ///< internal bias
-  std::string name;         ///< internal name
+  Eigen::MatrixXd weights_;  ///< internal weights
+  Eigen::VectorXd bias_;     ///< internal bias
+  std::string name_;         ///< internal name
 };
 
 #endif

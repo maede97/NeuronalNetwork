@@ -13,6 +13,7 @@ set(TESTS
     Linker
     Layers
     Network
+    DataSet
 )
 
 foreach(TEST_NAME ${TESTS})

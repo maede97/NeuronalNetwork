@@ -13,24 +13,31 @@ void createNetwork() {
 }
 
 void predict() {
-  FCLayer layer1(1, 4, "Another Layer");
+  FCLayer layer1(2, 4, "Another Layer");
   ActivationLayer activ(4, f, f);
   FCLayer layer2(4, 2);
+  DataSet data(2,2);
+  data.addTestSet(Eigen::Vector2d(1, 1));
+  data.addTrainingSet(Eigen::Vector2d(1, 1), Eigen::Vector2d(0, 1));
   Network net = Network();
+  net.setData(data);
   net.add(&layer1);
   net.add(&activ);
   net.add(&layer2);
-  Eigen::MatrixXd data(1, 1);
-  data << 0.5;
-  net.predict(data);
+  net.predict();
 }
 
 void fit() {
-  FCLayer layer1(1, 4, "A third Layer");
+  FCLayer layer1(2, 4, "A third Layer");
   ActivationLayer activ(4, f, f);
   FCLayer layer2(4, 2);
-  Network net = Network();
 
+  DataSet data(2,2);
+  data.addTestSet(Eigen::Vector2d(1, 1));
+  data.addTrainingSet(Eigen::Vector2d(1, 1), Eigen::Vector2d(0, 1));
+
+  Network net = Network();
+  net.setData(data);
   net.use([](Eigen::VectorXd, Eigen::VectorXd) -> double { return 1.0; },
           [](Eigen::VectorXd x, Eigen::VectorXd y) -> Eigen::VectorXd {
             return x;
@@ -38,10 +45,7 @@ void fit() {
   net.add(&layer1);
   net.add(&activ);
   net.add(&layer2);
-  // fit 3 examples throught the network
-  Eigen::MatrixXd dataX = Eigen::MatrixXd::Random(3, 1);
-  Eigen::MatrixXd dataY = Eigen::MatrixXd::Random(3, 2);
-  net.fit(dataX, dataY, 1, 0.2);
+  net.fit(1, 0.2);
 }
 
 int main(int argc, char const* argv[]) {
