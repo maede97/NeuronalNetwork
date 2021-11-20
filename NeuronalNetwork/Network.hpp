@@ -60,6 +60,12 @@ class Network {
    * @param set The DataSet to use
    */
   void setData(const DataSet& set) { set_ = set; }
+  
+  /**
+   * @brief Returns the last error.
+   * @return The last error.
+   */
+  double lastError() const { return last_err_; }
 
   /**
    * @brief Predict output of data
@@ -111,8 +117,7 @@ class Network {
         }
       }
       err /= (double)samples;
-      std::cout << "Epoch: " << i + 1 << "\terror: " << err << "\r"
-                << std::flush;
+      last_err_ = err;
     }
     std::cout << std::endl;
   }
@@ -124,6 +129,7 @@ class Network {
   std::function<Eigen::VectorXd(Eigen::VectorXd, Eigen::VectorXd)>
       lossPrime_;  ///< loss derivative to use
   DataSet set_;
+  double last_err_; ///< last error
 };
 
 #endif
