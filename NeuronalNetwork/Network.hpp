@@ -119,7 +119,6 @@ class Network {
       err /= (double)samples;
       last_err_ = err;
     }
-    std::cout << std::endl;
   }
 
  private:
